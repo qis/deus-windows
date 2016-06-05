@@ -3,8 +3,8 @@
 #include <shellapi.h>
 #include <resource.h>
 #include <codecvt>
-#include <string>
 #include <locale>
+#include <string>
 #include <vector>
 #include <clocale>
 
@@ -17,12 +17,12 @@ int main(int argc, char* argv[])
   OSVERSIONINFOEX info = {};
   info.dwOSVersionInfoSize = sizeof(info);
   info.dwMajorVersion = 6;
-  info.dwMinorVersion = 1;
+  info.dwMinorVersion = 3;
   DWORDLONG condition = 0;
   VER_SET_CONDITION(condition, VER_MAJORVERSION, VER_GREATER_EQUAL);
   VER_SET_CONDITION(condition, VER_MINORVERSION, VER_GREATER_EQUAL);
   if (!VerifyVersionInfo(&info, VER_MAJORVERSION | VER_MINORVERSION, condition)) {
-    MessageBox(nullptr, L"This application requires Windows 7 or newer.", TEXT(PROJECT" Error"), MB_OK | MB_ICONERROR | MB_SETFOREGROUND);
+    MessageBox(nullptr, L"This application requires Windows 8.1 or newer.", TEXT(PROJECT" Error"), MB_OK | MB_ICONERROR | MB_SETFOREGROUND);
     return 1;
   }
 

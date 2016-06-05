@@ -1,0 +1,56 @@
+#pragma once
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <iostream>
+#include <sstream>
+#include <mutex>
+
+class debug : public std::stringbuf, public std::ostream {
+public:
+  debug() : std::stringbuf(), std::ostream(this)
+  {
+    *this << std::boolalpha;
+  }
+
+  debug(debug&& other) = default;
+  debug(const debug& other) = default;
+
+  debug& operator=(debug&& other) = default;
+  debug& operator=(const debug& other) = default;
+
+  ~debug()
+  {
+    try {
+#ifdef _WIN32
+      static auto debugger_present = IsDebuggerPresent();
+      static auto console_window = GetConsoleWindow();
+      if (debugger_present || console_window) {
+        std::wstring msg;
+        auto str = std::stringbuf::str() + "\r\n";
+        msg.resize(MultiByteToWideChar(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), nullptr, 0) + 1);
+        msg.resize(MultiByteToWideChar(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), &msg[0], static_cast<int>(msg.size())));
+        std::lock_guard<std::mutex> lock(mutex());
+        if (debugger_present) {
+          OutputDebugString(msg.c_str());
+        }
+        if (console_window) {
+          std::wcout << msg << std::flush;
+        }
+      }
+#else
+      std::lock_guard<std::mutex> lock(mutex());
+      std::cout << std::stringbuf::str() << std::endl;
+#endif
+    }
+    catch (...) {
+    }
+  }
+
+private:
+  std::mutex& mutex()
+  {
+    static std::mutex mutex;
+    return mutex;
+  }
+};

@@ -1,0 +1,13 @@
+set(ZLIB_FOUND true)
+set(ZLIB_VERSION "1.2.8")
+get_filename_component(ZLIB_PATH "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+if(NOT TARGET zlib)
+  add_library(zlib STATIC IMPORTED)
+  set_target_properties(zlib PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${ZLIB_PATH}/include"
+    IMPORTED_LOCATION_DEBUG "${ZLIB_PATH}/lib/debug/zlib.lib"
+    IMPORTED_LOCATION_RELEASE "${ZLIB_PATH}/lib/release/zlib.lib"
+    IMPORTED_CONFIGURATIONS "DEBUG;RELEASE"
+    IMPORTED_LINK_INTERFACE_LANGUAGES "C")
+endif()

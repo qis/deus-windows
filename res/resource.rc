@@ -1,0 +1,52 @@
+#include <windows.h>
+#include "resource.h"
+#pragma code_page(65001)
+
+// Icons
+IDI_MAIN ICON "main.ico"
+
+// Files
+shader.vert RCDATA "data/shader.vert"
+shader.frag RCDATA "data/shader.frag"
+
+// Dialogs
+IDD_ERROR DIALOG 0, 0, 400, 260
+  STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+  FONT 9, "Segoe UI"
+  CAPTION "Error"
+BEGIN
+  ICON "", IDC_ERROR_ICON, 7, 7, 21, 20, SS_CENTERIMAGE
+  LTEXT "", IDC_ERROR_MESSAGE, 32, 7, 360, 20, SS_CENTERIMAGE
+  EDITTEXT IDC_ERROR_DETAILS, 7, 32, 386, 200, WS_BORDER | WS_VSCROLL | ES_MULTILINE | ES_READONLY
+  DEFPUSHBUTTON "&OK", IDOK, 343, 239, 50, 14
+END
+
+// Info
+VS_VERSION_INFO VERSIONINFO
+  FILEVERSION     VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH
+  PRODUCTVERSION  VERSION_MAJOR, VERSION_MINOR
+  FILEOS          VOS_NT_WINDOWS32
+  FILETYPE        VFT_APP
+  FILESUBTYPE     VFT2_UNKNOWN
+  FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+  FILEFLAGS       VS_FF_DEBUG
+#else
+  FILEFLAGS       0
+#endif
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "000004B0"
+    BEGIN
+      VALUE "FileDescription",  PROJECT
+      VALUE "ProductName",      PRODUCT
+      VALUE "ProductVersion",   VERSION
+      VALUE "LegalCopyright",   COPYING
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0, 0x04B0
+  END
+END

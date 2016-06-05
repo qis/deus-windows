@@ -1,0 +1,13 @@
+set(HARFBUZZ_FOUND true)
+set(HARFBUZZ_VERSION "1.2.7")
+get_filename_component(HARFBUZZ_ROOT "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+if(NOT TARGET harfbuzz)
+  add_library(harfbuzz STATIC IMPORTED)
+  set_target_properties(harfbuzz PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${HARFBUZZ_ROOT}/include"
+    IMPORTED_LOCATION_DEBUG "${HARFBUZZ_ROOT}/lib/debug/harfbuzz.lib"
+    IMPORTED_LOCATION_RELEASE "${HARFBUZZ_ROOT}/lib/release/harfbuzz.lib"
+    IMPORTED_CONFIGURATIONS "DEBUG;RELEASE"
+    IMPORTED_LINK_INTERFACE_LANGUAGES "CXX")
+endif()

@@ -195,11 +195,10 @@ void window::on_create()
   }
 
   // Create the client.
-#ifndef _DEBUG
-  auto path = std::filesystem::canonical(application_path() / "data.pak");
-#else
-  auto path = std::filesystem::canonical(application_path() / ".." / ".." / "res" / "data");
-#endif
+  auto path = application_path() / "data.pak";
+  if (IsDebuggerPresent()) {
+    path = std::filesystem::canonical("../res/data");
+  }
   client_ = std::make_unique<client>(path, cx_, cy_, dpi);
 
   // Show the window.

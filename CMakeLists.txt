@@ -35,8 +35,8 @@ if(NOT PANDOC_PATH)
   message(FATAL_ERROR "Could not find program: pandoc")
 endif()
 
-find_program(7Z_PATH REQUIRED NAMES 7z PATHS "C:/Program Files/7-Zip")
-if(NOT 7Z_PATH)
+find_program(7ZIP_PATH REQUIRED NAMES 7z PATHS "C:/Program Files/7-Zip")
+if(NOT 7ZIP_PATH)
   message(FATAL_ERROR "Could not find program: 7z")
 endif()
 
@@ -96,11 +96,20 @@ install(FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/third_party/angle/lib/$<LOWER_CASE:$<CONFIG>>/libGLESv2.dll
   DESTINATION bin)
 
+# Install Resources
+set(7ZIP_OPTIONS "a -tzip \"${CMAKE_CURRENT_BINARY_DIR}/data.pak\" \"*\"")
+set(7ZIP_COMMAND "\"${7ZIP_PATH}\" ${7ZIP_OPTIONS} WORKING_DIRECTORY \"${CMAKE_CURRENT_SOURCE_DIR}/res/data\"")
+install(CODE "execute_process(COMMAND ${7ZIP_COMMAND})")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/data.pak DESTINATION bin)
+
+
 # Install Documentation
 file(GLOB PANDOC_HTML res/pandoc.html)
-set(PANDOC_OPTIONS "-s -S -f markdown -t html -H \"${PANDOC_HTML}\"")
 foreach(src IN ITEMS ${doc})
   get_filename_component(name "${src}" NAME_WE)
-  set(dst "${CMAKE_INSTALL_PREFIX}/bin/${name}.html")
-  install(CODE "execute_process(COMMAND \"${PANDOC_PATH}\" ${PANDOC_OPTIONS} -o \"${dst}\" \"${src}\")")
+  set(dst "${CMAKE_CURRENT_BINARY_DIR}/${name}.html")
+  set(PANDOC_OPTIONS "-s -S -f markdown -t html -H \"${PANDOC_HTML}\"")
+  set(PANDOC_COMMAND "\"${PANDOC_PATH}\" ${PANDOC_OPTIONS} -o \"${dst}\" \"${src}\"")
+  install(CODE "execute_process(COMMAND ${PANDOC_COMMAND})")
+  install(FILES ${dst} DESTINATION bin)
 endforeach()

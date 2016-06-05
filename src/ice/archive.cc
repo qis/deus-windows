@@ -40,10 +40,21 @@ private:
 archive::archive(std::filesystem::path path) :
   path_(std::move(path))
 {
-  if (std::filesystem::is_regular_file(path)) {
+  auto type = std::filesystem::status(path_).type();
+  switch (std::filesystem::status(path_).type()) {
+  case std::filesystem::file_type::regular:
     impl_ = std::make_unique<impl>(path_);
-  } else if (!std::filesystem::is_directory(path_)) {
+    break;
+  case std::filesystem::file_type::directory:
+    break;
+  case std::filesystem::file_type::not_found:
     throw ice::runtime_error("Missing archive or directory.") << path_.u8string();
+    break;
+  default:
+    throw ice::runtime_error("Unsupported archive file type.")
+      << "Path: " << path_.u8string() << '\n'
+      << "Type: " << static_cast<int>(type);
+    break;
   }
 }
 

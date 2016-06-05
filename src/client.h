@@ -5,13 +5,14 @@
 #include <gl/vao.h>
 #include <atomic>
 #include <chrono>
+#include <filesystem>
 #include <string>
 
 class client {
 public:
   using clock = std::chrono::high_resolution_clock;
 
-  client(GLsizei cx, GLsizei cy, GLint dpi);
+  client(const std::filesystem::path& path, GLsizei cx, GLsizei cy, GLint dpi);
 
   void render();
   void resize(GLsizei cx, GLsizei cy);

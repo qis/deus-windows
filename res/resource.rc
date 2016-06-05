@@ -5,10 +5,6 @@
 // Icons
 IDI_MAIN ICON "main.ico"
 
-// Files
-shader.vert RCDATA "data/shader.vert"
-shader.frag RCDATA "data/shader.frag"
-
 // Dialogs
 IDD_ERROR DIALOG 0, 0, 400, 260
   STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU

@@ -1,20 +1,20 @@
 #include "client.h"
+#include <ice/archive.h>
 #include <ice/exception.h>
-#include <loader.h>
 #include <array>
 #include <cstdint>
 
-client::client(GLsizei cx, GLsizei cy, GLint dpi) :
+client::client(const std::filesystem::path& path, GLsizei cx, GLsizei cy, GLint dpi) :
   time_point_(clock::now())
 {
   glViewport(0, 0, cx, cy);
   glClearColor(0.2f, 0.4f, 0.6f, 1.0f);
 
-  loader loader;
+  ice::archive archive(path);
   
   program_ = {
-    gl::shader(loader.load<std::string>("shader.vert"), GL_VERTEX_SHADER),
-    gl::shader(loader.load<std::string>("shader.frag"), GL_FRAGMENT_SHADER)
+    gl::shader(archive.load<std::string>(u8"shaders/triangle.vert"), GL_VERTEX_SHADER),
+    gl::shader(archive.load<std::string>(u8"shaders/triangle.frag"), GL_FRAGMENT_SHADER)
   };
 
   GLfloat vertices[] = {

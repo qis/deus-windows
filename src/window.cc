@@ -8,6 +8,22 @@
 #include <exception>
 #include <string>
 
+namespace {
+
+std::filesystem::path application_path()
+{
+  DWORD size = 0;
+  std::wstring path;
+  do {
+    path.resize(path.size() + MAX_PATH);
+    size = GetModuleFileName(nullptr, &path[0], static_cast<DWORD>(path.size()));
+  } while (GetLastError() == ERROR_INSUFFICIENT_BUFFER);
+  path.resize(size);
+  return std::filesystem::path(path).parent_path();
+}
+
+}  // namespace
+
 void window::create(int samples, bool fullscreen)
 {
   // Store the settings.
@@ -179,7 +195,12 @@ void window::on_create()
   }
 
   // Create the client.
-  client_ = std::make_unique<client>(cx_, cy_, dpi);
+#ifndef _DEBUG
+  auto path = std::filesystem::canonical(application_path() / "data.pak");
+#else
+  auto path = std::filesystem::canonical(application_path() / ".." / ".." / "res" / "data");
+#endif
+  client_ = std::make_unique<client>(path, cx_, cy_, dpi);
 
   // Show the window.
   ShowWindow(hwnd_, SW_SHOW);

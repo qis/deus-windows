@@ -3,3 +3,6 @@ build/
 
 # Output directory.
 bin/
+
+# Personal files.
+notes.md

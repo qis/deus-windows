@@ -49,7 +49,6 @@ find_package(png      REQUIRED PATHS third_party/png)
 find_package(freetype REQUIRED PATHS third_party/freetype)
 find_package(harfbuzz REQUIRED PATHS third_party/harfbuzz)
 find_package(zip      REQUIRED PATHS third_party/zip)
-find_package(zlib     REQUIRED PATHS third_party/zlib)
 
 # Functions
 function(assign_source_group)
@@ -81,7 +80,7 @@ assign_source_group(${src})
 
 # Executable
 add_executable(${PROJECT_NAME} WIN32 ${doc} ${res} ${src} readme.md)
-target_link_libraries(${PROJECT_NAME} PRIVATE compat GLESv2 EGL asio jpeg png freetype harfbuzz zip zlib)
+target_link_libraries(${PROJECT_NAME} PRIVATE compat GLESv2 EGL asio_ssl jpeg png freetype harfbuzz zip)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME $<LOWER_CASE:${PROJECT_NAME}>)
 
 # Include Directories

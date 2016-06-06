@@ -5,13 +5,15 @@ This is a template for a Google ANGLE OpenGL ES 3.2 (Windows) application.
 * 64-bit Windows 10
 * Visual Studio 2015 Update 2
 * CMake >= 3.2
-* Pandoc >= 1.17
+* Pandoc
+* 7-zip
 
 ### Customizations
 Please change the project name, the "PRODUCT_NAME" and the "COPYING_TEXT" variables at the top of
 the [CMakeLists.txt](CMakeLists.txt) file before using this template.
 
-It is also a good idea to update the license in [doc/license.md](doc/license.md) before publishing.
+It is also a good idea to update the license in [doc/license.md](doc/license.md) and the release
+notes in [doc/release.md](doc/release.md) before publishing.
 
 ### Dependencies
 The Google ANGLE library must be built from source code.

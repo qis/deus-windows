@@ -75,7 +75,7 @@ void error(HWND parent, const std::string& message, const std::string& details)
         auto hdc = GetDC(hwnd);
         auto height = -MulDiv(10, GetDeviceCaps(hdc, LOGPIXELSY), 72);
         ReleaseDC(hwnd, hdc);
-        data->font = CreateFontW(height, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+        data->font = CreateFont(height, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
           CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, FIXED_PITCH, L"Consolas");
         SendMessage(details, WM_SETFONT, reinterpret_cast<WPARAM>(data->font), 0);
       }
